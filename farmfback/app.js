@@ -6,12 +6,12 @@ const taskRoutes = require("./routes/routestask.js");
 
 const app = new Koa();
 const router = new Router();
-
+//params add bodyparser
 app.use(BodyParser({
   multipart: true,
   urlencoded: true
 }));
-
+//global pull connect mongodb
 mongoose.Promise = global.Promise;
 const connStr = "mongodb://localhost/task";
 mongoose.connect(connStr, { useNewUrlParser: true, useMongoClient: true });
@@ -20,7 +20,6 @@ db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
   console.log("connected");
 });
-
 
 app.use(taskRoutes.routes());
 

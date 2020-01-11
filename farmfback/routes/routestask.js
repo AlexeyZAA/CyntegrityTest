@@ -1,20 +1,22 @@
-const Router = require("koa-router")
-const router = new Router()
-const convert = require('koa-convert')
-const KoaBody = require('koa-body')
-const koaBody = convert(KoaBody())
+const Router = require("koa-router");
+const router = new Router();
+const convert = require('koa-convert');
+const KoaBody = require('koa-body');
+const koaBody = convert(KoaBody());
 //импортируем модель задач
-const Task = require("../models/taskmodel")
+const Task = require("../models/taskmodel");
+const mongoose = require("mongoose");
+const isJson = require('koa-is-json');
 
 var funcApi = {
   //для роута без параметров
   getAllTask: async ctx => {
-    let tasks = await Task.find().exec()
+    let tasks = await Task.find().exec();
     ctx.body = tasks;
   }
 };
 //all tasks
-router.get("/taskapi", funcApi.getAllTask)
+router.get("/taskapi", funcApi.getAllTask);
 //one task
 router.get("/taskapi/:id", async (ctx, next) => {
   //console.log(ctx.params.name)
@@ -23,7 +25,7 @@ router.get("/taskapi/:id", async (ctx, next) => {
     taskone
   ) {
     if (err) {
-      console.log("errr", err)
+      console.log("errr", err);
     } else {
       ctx.body = taskone;
     }
@@ -31,23 +33,27 @@ router.get("/taskapi/:id", async (ctx, next) => {
 });
 
 router.post("/taskapi", koaBody, async ctx => {
-  let taskadd = JSON.parse(ctx.request.body)
-  console.log(taskadd.tasks.task_time)
-  if (taskadd.tasks) {
-    let task = new Task({ 
-      task_name: taskadd.tasks.task_name,
-      task_time: taskadd.tasks.task_time
-    })
-    task.save(function (err) {
-      if (err) {
-        console.log("Задача не добавлена" + err)
+  if(ctx.request.body){
+    let taskadd = JSON.parse(ctx.request.body)
+    console.log(taskadd)
+      if (taskadd.tasks.task_name !== '') {
+        let task = new Task({ 
+          task_name: taskadd.tasks.task_name,
+          task_time: taskadd.tasks.task_time  });
+        task.save(function (err) {
+          if (err) {
+            console.log("Задача не добавлена" + err);
+          } else {
+            console.log("Задача добавлена");
+          }
+        });
       } else {
-        console.log("Задача добавлена")
+        console.log("Нет нужных данных");
       }
-    });
-  } else {
-    console.log("Нет нужных данных")
-  }
+  }else{
+    console.log("ddddddddddddddddd")
+  }  
+
 });
 
 router.put("/taskapi/:id", koaBody, async ctx => {

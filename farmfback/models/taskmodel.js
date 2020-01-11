@@ -4,12 +4,10 @@ const Schema = mongoose.Schema
 
 const TaskSchema = new Schema({
     task_name: {
-        type: String,
-        required: true
+        type: String
     },
     task_time: {
-        type: Date,
-        default: Date.now,
+        type: Date
     }
 },{ 
     collection: 'taskuser'

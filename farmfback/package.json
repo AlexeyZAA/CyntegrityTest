@@ -32,6 +32,7 @@
     "koa-static": "^2.0.0",
     "koa-views": "^5.2.1",
     "koa-views-render": "0.0.1",
+    "koa2-cors": "^2.0.6",
     "mongodb": "^3.4.1",
     "mongoose": "^4.13.20"
   },

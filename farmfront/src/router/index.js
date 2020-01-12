@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Taskadd from '../views/Taskadd.vue'
+import user from '../views/User.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'taskadd',
-    component: Taskadd
+    name: 'user',
+    component: user
   }
 ]
 

@@ -3,10 +3,15 @@ const Router = require("koa-router");
 const mongoose = require('mongoose')
 const BodyParser = require("koa-bodyparser");
 const taskRoutes = require("./routes/routestask.js");
+const cors = require('koa2-cors');
 
 const app = new Koa();
 const router = new Router();
 
+app.use(cors({
+  allowMethods: ['GET', 'POST', 'DELETE'],
+  allowHeaders: ['Access-Control-Allow-Origin: *']
+}));
 app.use(BodyParser({
   multipart: true,
   urlencoded: true

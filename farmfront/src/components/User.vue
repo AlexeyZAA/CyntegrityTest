@@ -4,12 +4,11 @@
     <v-ons-toolbar>
       <div class="center">Задачи пользователя</div>
     </v-ons-toolbar>
-
     <v-ons-list>
       <v-ons-action-sheet-button icon="md-square-o">{{ loginLabel }}</v-ons-action-sheet-button>
       <v-ons-list-item>
-        <div class="center">
-          <v-ons-input placeholder="Пользователь" float v-model="tasknameuser"></v-ons-input>
+       <div class="center">
+          <v-ons-input placeholder="юзеры: admin, user, guest - pass: также" v-model="tasknameuser" size="100"></v-ons-input>
         </div>
       </v-ons-list-item>
       <v-ons-list-item>
@@ -35,14 +34,17 @@
           <img class="list-item__thumbnail" src="http://placekitten.com/g/40/40" />
         </div>
         <div class="center">
-          <span class="list-item__title">Задача: {{ value.task_name }}</span>
-          <span class="list-item__subtitle">Время: {{ value.task_time }}</span>
-          <span v-if="false" class="list-item__subtitle">Id: {{ value._id }}</span>
+          <div class="center">
+            <span class="list-item__title">Задача: {{ value.task_name }}</span><br>
+            <span class="list-item__subtitle">Время: {{ value.task_time }}</span>
+            <span style="display: none">Id: {{ value._id }}</span>
+          </div>
+          <div style="margin-left: auto;">
+            <v-ons-button @click="taskDel(value._id)">Удалить</v-ons-button>
+          </div>
         </div>
-        <div>
-          <v-ons-button @click="taskDel" style="margin: 6px 0">Удалить</v-ons-button>
-        </div>
-      </v-ons-list-item>
+
+    </v-ons-list-item>
     </v-ons-list>
     <v-ons-action-sheet :visible.sync="actionSheetVisible" cancelable title="Новое задание">
       <v-ons-list>
@@ -126,8 +128,17 @@ export default {
       this.actionSheetVisible = false;
       this.taskGet()
     },
-    taskDel: function() {
-      alert('Удалили котенка')
+    taskDel: function(idval) {
+       axios
+        .delete(apipath+idval)
+        this.taskGet(
+        )  
+        .then(
+        )
+        .catch(
+        );
+      this.$alert("Удалена задача");
+      this.taskGet();  
     }
   }
 };

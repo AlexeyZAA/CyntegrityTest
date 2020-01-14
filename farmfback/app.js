@@ -5,9 +5,13 @@ const BodyParser = require("koa-bodyparser");
 const taskRoutes = require("./routes/routestask.js");
 const cors = require('@koa/cors');
 const json = require('koa-json');
+//const cors = require('koa2-cors');
+
 
 const app = new Koa();
 const router = new Router();
+
+app.use(cors());
 
 app.use(BodyParser())
 
@@ -21,9 +25,8 @@ db.once("open", () => {
 });
 //маршруты для апи задач
 app.use(taskRoutes.routes());
-app.use(cors());
 app.use(json());
 
-app.listen(8888, () => {
+app.listen(8888, () => {  
   console.log("listening on port 8888");
 });

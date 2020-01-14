@@ -30,13 +30,17 @@
     </v-ons-list>
     <v-ons-list-header>Список задач</v-ons-list-header>
     <v-ons-list>
-      <v-ons-list-item v-for="(value, index) in arrlist" v-bind:key="index">
+      <v-ons-list-item v-for="(value, index) in axiosjsonres" v-bind:key="index">
         <div class="left">
           <img class="list-item__thumbnail" src="http://placekitten.com/g/40/40" />
         </div>
         <div class="center">
-          <span class="list-item__title">Задача: {{ task_name }}</span>
-          <span class="list-item__subtitle">Время: {{ task_time }}</span>
+          <span class="list-item__title">Задача: {{ value.task_name }}</span>
+          <span class="list-item__subtitle">Время: {{ value.task_time }}</span>
+          <span v-if="false" class="list-item__subtitle">Id: {{ value._id }}</span>
+        </div>
+        <div>
+          <v-ons-button @click="taskDel" style="margin: 6px 0">Удалить</v-ons-button>
         </div>
       </v-ons-list-item>
     </v-ons-list>
@@ -74,7 +78,7 @@ export default {
       passw: '',
       loginLabel: '',
       userauth: false,
-      axiosjsonres: '',
+      axiosjsonres: [],
       arrlist: [], //массив списка задач
       btnAdd: false, //видимость кнопки вызова диалога
       actionSheetVisible: false,   //всплывайка добавляйка
@@ -102,17 +106,12 @@ export default {
       }
     },
     taskGet: function() {
-      alert(apipath)
       axios
         .get(apipath)
         .then(response => {
-          alert(response)
-          this.axiosjsonres = response;
-          this.arrlist = this.axiosjsonres.data;
+          this.axiosjsonres = response.data;
         })
-        .catch(err => {
-          alert("No connect" + err);
-        });
+        .catch();
     },
     taskAdd: function() {
       axios
@@ -121,11 +120,14 @@ export default {
         })
         .then(response => {
           this.respPost = response;
-          //this.arrlist = this.axiosjsonres.data;
         })
         .catch();
       this.$alert("Добавлена задача");
       this.actionSheetVisible = false;
+      this.taskGet()
+    },
+    taskDel: function() {
+      alert('Удалили котенка')
     }
   }
 };

@@ -35,8 +35,8 @@
           <img class="list-item__thumbnail" src="http://placekitten.com/g/40/40" />
         </div>
         <div class="center">
-          <span class="list-item__title">Задача: {{ value.task_name }}</span>
-          <span class="list-item__subtitle">Время: {{ value.task_time }}</span>
+          <span class="list-item__title">Задача: {{ task_name }}</span>
+          <span class="list-item__subtitle">Время: {{ task_time }}</span>
         </div>
       </v-ons-list-item>
     </v-ons-list>
@@ -57,9 +57,9 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'
 //путь до апи
-const apipath = "http://192.168.0.5:8888/taskapi/"; //or localhost
+const apipath = 'http://localhost:8888/taskapi/'; //or localhost
 //предположим есть зарегестрированные юзеры
 const usersarr = new Map([
   ["admin", "admin"],
@@ -70,15 +70,18 @@ export default {
   name: "User",
   data() {
     return {
-      tasknameuser: "",
-      passw: "",
-      loginLabel: "",
+      tasknameuser: '',
+      passw: '',
+      loginLabel: '',
       userauth: false,
-      axiosjsonres: "",
+      axiosjsonres: '',
       arrlist: [], //массив списка задач
       btnAdd: false, //видимость кнопки вызова диалога
       actionSheetVisible: false,   //всплывайка добавляйка
-      respPost: ""
+      respPost: '',
+      task_name: '',
+      task_time: ''
+
     };
   },
   methods: {
@@ -99,9 +102,11 @@ export default {
       }
     },
     taskGet: function() {
+      alert(apipath)
       axios
         .get(apipath)
         .then(response => {
+          alert(response)
           this.axiosjsonres = response;
           this.arrlist = this.axiosjsonres.data;
         })
@@ -111,14 +116,14 @@ export default {
     },
     taskAdd: function() {
       axios
-        .post(apipath)
+        .post(apipath, {
+           datatask: {'task_name': this.task_name, 'task_time': this.task_time}
+        })
         .then(response => {
           this.respPost = response;
           //this.arrlist = this.axiosjsonres.data;
         })
-        .catch(err => {
-          alert("Problem - " + err);
-        });
+        .catch();
       this.$alert("Добавлена задача");
       this.actionSheetVisible = false;
     }

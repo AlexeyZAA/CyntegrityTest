@@ -7,7 +7,7 @@ const PipSchema = new Schema(
       type: String
     },
     pip_time: {
-      type: Date
+      type: String
     }
   },
   {

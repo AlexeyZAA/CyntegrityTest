@@ -39,7 +39,7 @@
           >
           <v-ons-button
             v-if="btnAdd"
-            @click="actionSheetVisiblePip = true"
+            @click="actionSheetVisiblePip = true; pipGet()"
             style="margin-left: 6px"
             >Добавить Конвеер</v-ons-button
           >
@@ -118,7 +118,7 @@
           ></v-ons-input>
         </v-ons-list-item>
         <v-ons-list-item>
-          <v-ons-action-sheet-button @click="taskAdd" icon="md-square-o"
+          <v-ons-action-sheet-button icon="md-square-o"
             >Добавить задачу</v-ons-action-sheet-button
           >
         </v-ons-list-item>
@@ -132,36 +132,36 @@
     >
       <v-ons-list>
         <v-ons-list-item>
-          <v-ons-input
-            placeholder="имя Конвеера"
-            float
-            size="100"
-            v-model="userpip"
-          ></v-ons-input>
+          <div style="color:black">
+            <v-ons-input size="50" disabled="true"
+              >{{ tasknameuser }} № {{ numpip }}
+            </v-ons-input>
+          </div>
         </v-ons-list-item>
         <v-ons-list-item>
           <v-ons-input
             placeholder="среднее время выполнения"
             float
             size="100"
-            v-model="task_time"
+            v-model="pip_time"
           ></v-ons-input>
         </v-ons-list-item>
         <v-ons-list-item>
-          <v-ons-action-sheet-button @click="pipAdd" icon="md-square-o"
-            >Добавить ковеер</v-ons-action-sheet-button
+          <v-ons-action-sheet-button icon="md-square-o"
+            >Добавить конвеер</v-ons-action-sheet-button
           >
         </v-ons-list-item>
       </v-ons-list>
     </v-ons-action-sheet>
+
   </v-ons-page>
 </template>
 
 <script>
 import axios from "axios";
 //путь до апи
-const apipath = "http://localhost:8888/taskapi/"
-const pippath = "http://localhost:8888/pipapi/"
+const apipath = "http://localhost:8888/taskapi/";
+const pippath = "http://localhost:8888/pipapi/count/"
 //предположим есть зарегестрированные юзеры
 
 const usersarr = new Map([
@@ -184,12 +184,14 @@ export default {
       respPost: "",
       task_name: "",
       task_time: "",
+      pip_time: "",
       fordel: [],
       isVisiblePip: false,
       isVisibleTask: false,
       myPip: "Мой конвеер",
       userpip: "",
-      responsepip: ""
+      responsepip: "",
+      numpip: 0
     };
   },
   methods: {
@@ -246,17 +248,24 @@ export default {
       this.userauth = false;
       this.axiosjsonres = [];
       this.btnAdd = false;
-      this.actionSheetVisible = false;
       this.respPost = "";
       this.task_name = "";
       this.task_time = "";
       this.fordel = [];
+      this.actionSheetVisible = false;
+      this.actionSheetVisiblePip = false;
     },
-    pipAdd: () => {
-      alert("Pip add");
-    },
-    pipGet: () => {}
-  },
+    pipGet: function() {
+      axios
+        .get(pippath)
+        .then(respip => {
+          this.numpip = respip.data;
+        })
+        .catch();
+    }
+  }
+  /*
+  ,
   created() {
     axios
       .get(pippath)
@@ -265,5 +274,6 @@ export default {
       })
       .catch();
   }
+  */
 };
 </script>

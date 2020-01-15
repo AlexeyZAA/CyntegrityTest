@@ -1,40 +1,45 @@
 const Router = require('koa-router')
 const router = new Router()
 
-const Task = require('../models/taskmodel')
+const Pip = require('../models/pipmodel')
 
 const funcApi = {
-  getAllTask: async ctx => {
-    ctx.body = await Task.find().exec()
+  getAllPipCount: async ctx => {
+    ctx.body = await Pip.find().count().exec() + 1
+  },
+  getAllPip: async ctx => {
+    ctx.body = await Pip.find().exec()
   }
-};
+}
 
-router.get('/taskapi', funcApi.getAllTask)
+router.get('/pipapi/count', funcApi.getAllPipCount)
 
-router.get('/taskapi/:id', async (ctx, next) => {
-  await Task.findOne({ _id: ctx.params.id }, function(err, taskone) {
+router.get('/pipapi', funcApi.getAllPip)
+
+router.get('/pipapi/:id', async (ctx, next) => {
+  await Pip.findOne({ _id: ctx.params.id }, function(err, taskone) {
     if (err) {
       console.log('errr', err)
     } else {
       ctx.body = taskone
     }
-  });
-});
+  })
+})
 
-router.post('/taskapi', async ctx => {
+router.post('/pipapi', async ctx => {
   if (ctx.request.body.datatask) {
     const taskadd = ctx.request.body.datatask
     console.log(taskadd)
     if (taskadd.task_name !== '') {
-      let task = new Task({
+      const pip = new Pip({
         task_name: taskadd.task_name,
         task_time: taskadd.task_time
       })
-      task.save(function(err) {
+      pip.save(function(err) {
         if (err) {
-          console.log('Задача не добавлена' + err)
+          console.log('Конвеер не добавлена' + err)
         } else {
-          console.log('Задача добавлена')
+          console.log('Конвеер добавлена')
         }
       });
     } else {
@@ -45,27 +50,27 @@ router.post('/taskapi', async ctx => {
   }
 });
 
-router.put('/taskapi/:id', async ctx => {
+router.put('/pipapi/:id', async ctx => {
   const tasknameupdate = ctx.request.body
   if (tasknameupdate.task_name && tasknameupdate.task_name !== '') {
-    await Task.findOneAndUpdate(
+    await Pip.findOneAndUpdate(
       { _id: ctx.params.id },
       { task_name: tasknameupdate.task_name }
     )
-      .then(console.log('Запись ' + ctx.params.id) + ' обновлена')
+      .then(console.log('Конвеер ' + ctx.params.id) + ' обновлена')
       .catch(err => {
         console.log('No update-' + err)
       })
   } else {
     console.log('Error: not data')
   }
-});
+})
 
-router.delete('/taskapi/:id', async ctx => {
-  await Task.deleteOne({
+router.delete('/pipapi/:id', async ctx => {
+  await Pip.deleteOne({
     _id: ctx.params.id
   })
-    .then(console.log('Task delete'))
+    .then(console.log('Конвеер удален'))
     .catch(err => {
       console.log('Error - ' + err)
     })

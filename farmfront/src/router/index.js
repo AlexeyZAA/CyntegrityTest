@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import user from '../views/User.vue'
+import userTask from '../views/UserTask.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'user',
-    component: user
+    name: 'usertask',
+    component: userTask
   }
 ]
 

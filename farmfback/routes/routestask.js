@@ -1,6 +1,6 @@
-const Router = require("koa-router");
-const router = new Router();
-var bodyParser = require("koa-bodyparser");
+const Router = require('koa-router')
+const router = new Router()
+var bodyParser = require("koa-bodyparser")
 //импортируем модель задач
 const Task = require("../models/taskmodel");
 const mongoose = require("mongoose");
@@ -25,7 +25,7 @@ router.get("/taskapi/:id", async (ctx, next) => {
 });
 
 router.post("/taskapi", async ctx => {
-   if (ctx.request.body.datatask) {
+  if (ctx.request.body.datatask) {
     const taskadd = ctx.request.body.datatask;
     console.log(taskadd);
     if (taskadd.task_name !== "") {

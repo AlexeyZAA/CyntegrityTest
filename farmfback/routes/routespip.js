@@ -27,19 +27,19 @@ router.get('/pipapi/:id', async (ctx, next) => {
 })
 
 router.post('/pipapi', async ctx => {
-  if (ctx.request.body.datatask) {
-    const taskadd = ctx.request.body.datatask
-    console.log(taskadd)
-    if (taskadd.task_name !== '') {
+  if (ctx.request.body.datapip) {
+    const pipadd = ctx.request.body.datapip
+    console.log(ctx.request.body)
+    if (pipadd.pip_name !== '') {
       const pip = new Pip({
-        task_name: taskadd.task_name,
-        task_time: taskadd.task_time
+        pip_name: pipadd.pip_name,
+        pip_time: pipadd.pip_time
       })
       pip.save(function(err) {
         if (err) {
-          console.log('Конвеер не добавлена' + err)
+          console.log('Конвеер не добавлен' + err)
         } else {
-          console.log('Конвеер добавлена')
+          console.log('Конвеер добавлен')
         }
       });
     } else {
@@ -48,32 +48,6 @@ router.post('/pipapi', async ctx => {
   } else {
     console.log('ddddddddddddddddd')
   }
-});
-
-router.put('/pipapi/:id', async ctx => {
-  const tasknameupdate = ctx.request.body
-  if (tasknameupdate.task_name && tasknameupdate.task_name !== '') {
-    await Pip.findOneAndUpdate(
-      { _id: ctx.params.id },
-      { task_name: tasknameupdate.task_name }
-    )
-      .then(console.log('Конвеер ' + ctx.params.id) + ' обновлена')
-      .catch(err => {
-        console.log('No update-' + err)
-      })
-  } else {
-    console.log('Error: not data')
-  }
-})
-
-router.delete('/pipapi/:id', async ctx => {
-  await Pip.deleteOne({
-    _id: ctx.params.id
-  })
-    .then(console.log('Конвеер удален'))
-    .catch(err => {
-      console.log('Error - ' + err)
-    })
 })
 
 module.exports = router

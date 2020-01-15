@@ -39,7 +39,10 @@
           >
           <v-ons-button
             v-if="btnAdd"
-            @click="actionSheetVisiblePip = true; pipGet()"
+            @click="
+              actionSheetVisiblePip = true;
+              pipGetCount();
+            "
             style="margin-left: 6px"
             >Добавить Конвеер</v-ons-button
           >
@@ -53,8 +56,29 @@
     <v-ons-list>
       <v-ons-list-header>{{ myPip }}</v-ons-list-header>
       <v-ons-list-item expandable :expanded.sync="isVisiblePip">
-        Все конвееры
-        <div class="expandable-content">Вместо див конвееры</div>
+        <v-ons-list>
+          <v-ons-list-item
+            v-for="(value, index) in pipresponse"
+            v-bind:key="index"
+          >
+           <div class="left">
+          <v-ons-radio
+            :input-id="'radio-' + $index"
+            :value="vegetable"
+            v-model=" selectedVegetable"
+          >
+          </v-ons-radio>
+            </div>
+            <div class="center">
+              <span class="list-item__title">Конвеер: {{ value.pip_name }}</span
+              ><br/>
+              <span class="list-item__subtitle"
+                >Время на выполнение: {{ value.pip_time }}</span
+              >
+              <span style="display:none">Id: {{ value._id }}</span>
+            </div>
+          </v-ons-list-item>
+        </v-ons-list>
       </v-ons-list-item>
     </v-ons-list>
     <br />
@@ -118,7 +142,7 @@
           ></v-ons-input>
         </v-ons-list-item>
         <v-ons-list-item>
-          <v-ons-action-sheet-button icon="md-square-o"
+          <v-ons-action-sheet-button @click="taskAdd" icon="md-square-o"
             >Добавить задачу</v-ons-action-sheet-button
           >
         </v-ons-list-item>
@@ -147,21 +171,21 @@
           ></v-ons-input>
         </v-ons-list-item>
         <v-ons-list-item>
-          <v-ons-action-sheet-button icon="md-square-o"
+          <v-ons-action-sheet-button @click="pipAdd" icon="md-square-o"
             >Добавить конвеер</v-ons-action-sheet-button
           >
         </v-ons-list-item>
       </v-ons-list>
     </v-ons-action-sheet>
-
   </v-ons-page>
 </template>
 
 <script>
 import axios from "axios";
 //путь до апи
-const apipath = "http://localhost:8888/taskapi/";
-const pippath = "http://localhost:8888/pipapi/count/"
+const apipath = "http://localhost:8888/taskapi/"
+const pippathcount = "http://localhost:8888/pipapi/count/"
+const pippath = "http://localhost:8888/pipapi/"
 //предположим есть зарегестрированные юзеры
 
 const usersarr = new Map([
@@ -185,12 +209,13 @@ export default {
       task_name: "",
       task_time: "",
       pip_time: "",
+      pip_name: this.tasknameuser + "№" + this.numpip,
       fordel: [],
       isVisiblePip: false,
       isVisibleTask: false,
-      myPip: "Мой конвеер",
+      myPip: "Мои конвееры",
       userpip: "",
-      responsepip: "",
+      pipresponse: [],
       numpip: 0
     };
   },
@@ -209,6 +234,7 @@ export default {
       }
       if (this.userauth) {
         this.taskGet();
+        this.pipGet();
       }
     },
     taskGet: function() {
@@ -249,31 +275,42 @@ export default {
       this.axiosjsonres = [];
       this.btnAdd = false;
       this.respPost = "";
+      this.respPostPip = "";
       this.task_name = "";
       this.task_time = "";
       this.fordel = [];
       this.actionSheetVisible = false;
       this.actionSheetVisiblePip = false;
     },
-    pipGet: function() {
+    pipGetCount: function() {
       axios
-        .get(pippath)
+        .get(pippathcount)
         .then(respip => {
           this.numpip = respip.data;
         })
         .catch();
+    },
+    pipGet: function() {
+      axios
+        .get(pippath)
+        .then(response => {
+          this.pipresponse = response.data;
+        })
+        .catch();
+    },
+    pipAdd: function() {
+      axios
+        .post(pippath, {
+          datapip: { pip_name: this.tasknameuser + " №" + this.numpip, pip_time: this.pip_time }
+        })
+        .then(resppost => {
+          this.respPostPip = resppost
+        })
+        .catch();
+      this.actionSheetVisiblePip = false;  
+      this.$alert("Добавлен конвеер");
+      this.pipGet();
     }
   }
-  /*
-  ,
-  created() {
-    axios
-      .get(pippath)
-      .then(respip => {
-        this.responsepip = respip.data;
-      })
-      .catch();
-  }
-  */
 };
 </script>

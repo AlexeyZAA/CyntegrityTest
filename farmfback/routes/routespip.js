@@ -25,6 +25,22 @@ router.get('/pipapi/:id', async (ctx, next) => {
     }
   })
 })
+router.put('/pipapi/:id', async ctx => {
+  const piptaskupdate = ctx.request.body
+  console.log(piptaskupdate.checkObj)
+  if (piptaskupdate.checkObj && piptaskupdate.checkObj !== '') {
+    await Task.findOneAndUpdate(
+      { _id: ctx.params.id },
+      { task_name: tasknameupdate.task_name }
+    )
+      .then(console.log('Запись ' + ctx.params.id) + ' обновлена')
+      .catch(err => {
+        console.log('No update-' + err)
+      })
+  } else {
+    console.log('Error: not data')
+  }
+});
 
 router.post('/pipapi', async ctx => {
   if (ctx.request.body.datapip) {
@@ -32,6 +48,7 @@ router.post('/pipapi', async ctx => {
     console.log(ctx.request.body)
     if (pipadd.pip_name !== '') {
       const pip = new Pip({
+        pip_user: pipadd.pip_user,
         pip_name: pipadd.pip_name,
         pip_time: pipadd.pip_time
       })

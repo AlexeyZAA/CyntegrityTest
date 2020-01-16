@@ -54,9 +54,9 @@ router.post('/pipapi', async ctx => {
       })
       pip.save(function(err) {
         if (err) {
-          console.log('Конвеер не добавлен' + err)
+          console.log('конвейер не добавлен' + err)
         } else {
-          console.log('Конвеер добавлен')
+          console.log('конвейер добавлен')
         }
       });
     } else {

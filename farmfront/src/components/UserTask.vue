@@ -38,14 +38,14 @@
               pipGetCount();
             "
             style="margin-left: 6px"
-          >Добавить Конвеер</v-ons-button>
+          >Добавить конвейер</v-ons-button>
           <v-ons-button v-if="userauth" @click="logout" style="margin-left: 7px">Выйти</v-ons-button>
         </div>
       </v-ons-list-item>
     </v-ons-list>
     <v-ons-list>  
       <v-ons-list-item>
-      <div>задачи для выбранного конвеера</div>
+      <div>задачи для выбранного конвейера</div>
         <div class="center" style="margin-left: 10px">
         <v-ons-button v-if="userauth" @click="taskInPip" >Показать</v-ons-button>
         <v-ons-button v-if="userauth" @click="taskInPipAdd" style="margin-left: 10px">Добавить в конвеер</v-ons-button>
@@ -64,7 +64,7 @@
                 <v-ons-radio :input-id="'radio-' + index" :value="value._id" v-model="selectedPip" style="border: ridge"></v-ons-radio>
               </div>
               <div class="center">
-                <span class="list-item__title">Конвеер: {{ value.pip_name }}</span>
+                <span class="list-item__title">Конвейер: {{ value.pip_name }}</span>
                 <br />
                 <span class="list-item__subtitle">Время на выполнение: {{ value.pip_time }}</span>
                 <span style="display:none">Id: {{ value._id }}</span>
@@ -131,7 +131,7 @@
           <v-ons-input placeholder="среднее время выполнения" float size="100" v-model="pip_time"></v-ons-input>
         </v-ons-list-item>
         <v-ons-list-item>
-          <v-ons-action-sheet-button @click="pipAdd" icon="md-square-o">Добавить конвеер</v-ons-action-sheet-button>
+          <v-ons-action-sheet-button @click="pipAdd" icon="md-square-o">Добавить конвейер</v-ons-action-sheet-button>
         </v-ons-list-item>
       </v-ons-list>
     </v-ons-action-sheet>
@@ -172,7 +172,7 @@ export default {
       isVisiblePip: false,
       checkedTask: [], //отмеченные задачи
       isVisibleTask: false,
-      myPip: "Конвееры",
+      myPip: "Конвейеры",
       userpip: "",
       pipresponse: [],
       numpip: 0,
@@ -294,7 +294,7 @@ export default {
         })
         .catch();
       this.actionSheetVisiblePip = false;
-      this.$alert("Добавлен конвеер");
+      this.$alert("Добавлен конвейер");
       this.pipGet();
     }
   }

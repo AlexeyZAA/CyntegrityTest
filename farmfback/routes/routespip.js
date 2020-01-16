@@ -12,28 +12,28 @@ const funcApi = {
   }
 }
 
-router.get('/pipapi/count', funcApi.getAllPipCount)
+router.get('/pipapi/count/pip', funcApi.getAllPipCount)
 
 router.get('/pipapi', funcApi.getAllPip)
 
 router.get('/pipapi/:id', async (ctx, next) => {
-  await Pip.findOne({ _id: ctx.params.id }, function(err, taskone) {
+  await Pip.findOne({ _id: ctx.params.id }, function(err, pipone) {
     if (err) {
       console.log('errr', err)
     } else {
-      ctx.body = taskone
+      ctx.body = pipone
     }
   })
 })
 router.put('/pipapi/:id', async ctx => {
-  const piptaskupdate = ctx.request.body
-  console.log(piptaskupdate.checkObj)
-  if (piptaskupdate.checkObj && piptaskupdate.checkObj !== '') {
-    await Task.findOneAndUpdate(
-      { _id: ctx.params.id },
-      { task_name: tasknameupdate.task_name }
+  console.log(ctx.request.body.data.tasks)
+  console.log(ctx.request.body.data.id)
+  if (ctx.request.body.data && ctx.request.body.data !== '') {
+    await Pip.findOneAndUpdate(
+      { _id: ctx.request.body.data.id },
+      { pip_task: ctx.request.body.data.tasks }
     )
-      .then(console.log('Запись ' + ctx.params.id) + ' обновлена')
+      .then(console.log('Запись ' + ctx.request.body.data.id + ' обновлена'))
       .catch(err => {
         console.log('No update-' + err)
       })

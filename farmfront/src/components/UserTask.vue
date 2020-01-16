@@ -48,6 +48,7 @@
       <div>задачи для выбранного конвеера</div>
         <div class="center" style="margin-left: 10px">
         <v-ons-button v-if="userauth" @click="taskInPip" >Показать</v-ons-button>
+        <v-ons-button v-if="userauth" @click="taskInPipAdd" style="margin-left: 10px">Добавить в конвеер</v-ons-button>
         </div>
       </v-ons-list-item>  
     </v-ons-list>
@@ -141,7 +142,7 @@
 import axios from "axios";
 //путь до апи
 const apipath = "http://localhost:8888/taskapi/";
-const pippathcount = "http://localhost:8888/pipapi/count/";
+const pippathcount = "http://localhost:8888/pipapi/count/pip";
 const pippath = "http://localhost:8888/pipapi/";
 //предположим есть зарегестрированные юзеры
 
@@ -169,7 +170,7 @@ export default {
       pip_name: this.tasknameuser + "№" + this.numpip,
       fordel: [],
       isVisiblePip: false,
-      checkedTask: [],
+      checkedTask: [], //отмеченные задачи
       isVisibleTask: false,
       myPip: "Конвееры",
       userpip: "",
@@ -208,6 +209,12 @@ export default {
       let ar = {checkObj: this.checkedTask}
       axios
         .put(pippath + this.selectedPip, { ar })
+        .then()
+        .catch();
+    },
+    taskInPipAdd: function () {
+      axios
+        .put(pippath + this.selectedPip, {data: {tasks: this.checkedTask, id: this.selectedPip }})
         .then()
         .catch();
     },

@@ -13,7 +13,8 @@ const PipSchema = new Schema(
       type: String
     },
     pip_task: {
-      type: []
+      type: [],
+      default: []
     }
   },
   {

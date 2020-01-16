@@ -68,6 +68,7 @@
                 <br />
                 <span class="list-item__subtitle">Время на выполнение: {{ value.pip_time }}</span>
                 <span style="display:none">Id: {{ value._id }}</span>
+                Задачи в конвейере: {{ value.pip_task }}
               </div>
             </v-ons-list-item>
           </v-ons-list>
@@ -174,9 +175,11 @@ export default {
       isVisibleTask: false,
       myPip: "Конвейеры",
       userpip: "",
-      pipresponse: [],
+      pipresponse: null,
       numpip: 0,
-      selectedPip: ""
+      selectedPip: "",
+      tip: "",
+      respPipTask: null
     };
   },
   methods: {
@@ -255,6 +258,7 @@ export default {
       this.fordel = [];
       this.actionSheetVisible = false;
       this.actionSheetVisiblePip = false;
+      this.tip = "";
     },
     pipGetCount: function() {
       axios
@@ -268,9 +272,10 @@ export default {
       axios
         .get(pippath)
         .then(response => {
-          this.pipresponse = response.data;
+          this.respPipTask = response.data.respons 
+          this.pipresponse = response.data.respons
         })
-        .catch();
+        .catch()
     },
     pipGetMy: function() {
       axios

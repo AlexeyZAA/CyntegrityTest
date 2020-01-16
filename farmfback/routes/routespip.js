@@ -24,17 +24,16 @@ const funcApi = {
 
     for (let j = 0; j < taskArr.length; j++) {
       var pipname = pip[j].pip_name
+      var piid = pip[j]._id
       var task = []
       for (let k = 0; k < taskArr[j].length; k++) {
         task = taskArr[j]
       }
       //ищем задачи по именам
-      //var tip = await Tip.find({ _id: ['5e1e782eb4e7cb100445286f', '5e1e7fe9b4e7cb1004452871'] }).exec()
       var tip = await Tip.find({ _id: task }).exec()
-
-      resptip.push({ pip_name: pipname, pip_time: pip[j].pip_time, pip_task: tip })
+      resptip.push({_id: piid, pip_name: pipname, pip_time: pip[j].pip_time, pip_task: tip })
     }
-    
+
     ctx.body = { respons: resptip }
   }
 }
@@ -44,7 +43,7 @@ router.get("/pipapi/count/pip", funcApi.getAllPipCount)
 router.get("/pipapi", funcApi.getAllPip)
 
 router.get("/pipapi/:id", async (ctx, next) => {
-  await Pip.findOne({ _id: ctx.params.id }, function(err, pipone) {
+  await Pip.findOne({ _id: ctx.params.id }, function (err, pipone) {
     if (err) {
       console.log("errr", err)
     } else {
@@ -79,7 +78,7 @@ router.post("/pipapi", async ctx => {
         pip_name: pipadd.pip_name,
         pip_time: pipadd.pip_time
       });
-      pip.save(function(err) {
+      pip.save(function (err) {
         if (err) {
           console.log("конвейер не добавлен" + err)
         } else {

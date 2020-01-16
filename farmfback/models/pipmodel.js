@@ -10,7 +10,8 @@ const PipSchema = new Schema(
       type: String
     },
     pip_time: {
-      type: String
+      type: String,
+      default: '00:00'
     },
     pip_task: {
       type: [],

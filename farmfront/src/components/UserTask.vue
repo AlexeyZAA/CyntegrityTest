@@ -47,8 +47,8 @@
       <v-ons-list-item>
       <div>задачи для выбранного конвейера</div>
         <div class="center" style="margin-left: 10px">
-        <v-ons-button v-if="userauth" @click="taskInPip" >Показать</v-ons-button>
-        <v-ons-button v-if="userauth" @click="taskInPipAdd" style="margin-left: 10px">Добавить в конвеер</v-ons-button>
+        <v-ons-button v-if="userauth" @click="pipGet">Показать</v-ons-button>
+        <v-ons-button v-if="userauth" @click="taskInPipAdd" style="margin-left: 10px">Добавить в конвейер</v-ons-button>
         </div>
       </v-ons-list-item>  
     </v-ons-list>
@@ -68,7 +68,12 @@
                 <br />
                 <span class="list-item__subtitle">Время на выполнение: {{ value.pip_time }}</span>
                 <span style="display:none">Id: {{ value._id }}</span>
-                Задачи в конвейере: {{ value.pip_task }}
+                Задачи в конвейере: 
+                <span style="color: blue" v-for="(taskpip, _id) in value.pip_task" v-bind:key="_id">
+                  <div style="margin-left: 5px">
+                    ( {{ taskpip.task_name }} - {{ taskpip.task_time }} )
+                    </div>
+                  </span>
               </div>
             </v-ons-list-item>
           </v-ons-list>
@@ -129,7 +134,7 @@
           </div>
         </v-ons-list-item>
         <v-ons-list-item>
-          <v-ons-input placeholder="среднее время выполнения" float size="100" v-model="pip_time"></v-ons-input>
+          <v-ons-input disabled="true" placeholder="среднее время выполнения формат" float size="100" v-model="pip_time"></v-ons-input>
         </v-ons-list-item>
         <v-ons-list-item>
           <v-ons-action-sheet-button @click="pipAdd" icon="md-square-o">Добавить конвейер</v-ons-action-sheet-button>
@@ -167,7 +172,7 @@ export default {
       respPost: "",
       task_name: "",
       task_time: "",
-      pip_time: "",
+      pip_time: "00:00",
       pip_name: this.tasknameuser + "№" + this.numpip,
       fordel: [],
       isVisiblePip: false,
@@ -179,7 +184,6 @@ export default {
       numpip: 0,
       selectedPip: "",
       tip: "",
-      respPipTask: null
     };
   },
   methods: {
@@ -235,13 +239,14 @@ export default {
       this.taskGet();
     },
     taskDel: function(idval) {
-      axios
+     axios
         .delete(apipath + idval)
         .then(() => {
           alert("then delete");
         })
         .catch();
       this.$alert("Удалена задача");
+      this.loginUser() //неправильно
     },
     logout: function() {
       this.tasknameuser = "";
@@ -272,7 +277,6 @@ export default {
       axios
         .get(pippath)
         .then(response => {
-          this.respPipTask = response.data.respons 
           this.pipresponse = response.data.respons
         })
         .catch()
@@ -296,6 +300,7 @@ export default {
         })
         .then(resppost => {
           this.respPostPip = resppost;
+          this.pipGet
         })
         .catch();
       this.actionSheetVisiblePip = false;

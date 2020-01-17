@@ -23,10 +23,10 @@ const funcApi = {
     for (let i = 0; i < countPip; i++) {
       taskArr.push(pip[i].pip_task)
     }
-
+    var pipid
     for (let j = 0; j < taskArr.length; j++) {
       var pipname = pip[j].pip_name
-      var piid = pip[j]._id
+      piid = pip[j]._id
       var task = []
       for (let k = 0; k < taskArr[j].length; k++) {
         task = taskArr[j]
@@ -40,15 +40,25 @@ const funcApi = {
       for (let q = 0; q < tip.length; q++) {
         sumtime.push(tip[q].task_time)
       }
-
-      //console.log(sumtime)
-
+      let tpip = sumtime.length !== 0 ? sumMinutes(sumtime) : 'нет данных'
       resptip.push({
         _id: piid,
         pip_name: pipname,
-        pip_time: sumtime.length !== 0 ? sumMinutes(sumtime) : 'нет данных', //JSON.stringify(sumMinutes(sumtime)),
+        pip_time: tpip,
         pip_task: tip
       })
+
+      //обновляем данные времени
+      await Pip.findOneAndUpdate({
+        _id: piid
+      }, {
+        pip_time: tpip
+      })
+        .then(console.log('Запись ' + pipname + ' обновлена'))
+        .catch(err => {
+          console.log('No update-' + err)
+        })
+
     }
 
     function sumMinutes(values) {
@@ -86,7 +96,7 @@ const funcApi = {
         .toISOString()
         .substr(8, 2)
 
-      let tmp = (parseInt(resultday) - 1)   
+      let tmp = (parseInt(resultday) - 1)
       //console.log(tmp)
       return (tmp + ' day(s)_' + resulttime)
     }
@@ -117,10 +127,10 @@ router.put('/pipapi/:id', async ctx => {
   console.log(ctx.request.body.data.id)
   if (ctx.request.body.data && ctx.request.body.data !== '') {
     await Pip.findOneAndUpdate({
-        _id: ctx.request.body.data.id
-      }, {
-        pip_task: ctx.request.body.data.tasks
-      })
+      _id: ctx.request.body.data.id
+    }, {
+      pip_task: ctx.request.body.data.tasks
+    })
       .then(console.log('Запись ' + ctx.request.body.data.id + ' обновлена'))
       .catch(err => {
         console.log('No update-' + err)

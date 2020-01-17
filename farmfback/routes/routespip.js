@@ -18,6 +18,7 @@ const funcApi = {
     var pip = await Pip.find().exec()
     var taskArr = []
     var resptip = []
+    var times = ''
 
     for (let i = 0; i < countPip; i++) {
       taskArr.push(pip[i].pip_task)
@@ -40,16 +41,17 @@ const funcApi = {
         sumtime.push(tip[q].task_time)
       }
 
+      //console.log(sumtime)
+
       resptip.push({
         _id: piid,
         pip_name: pipname,
-        pip_time: sumMinutes(sumtime),
+        pip_time: sumtime.length !== 0 ? sumMinutes(sumtime) : 'нет данных', //JSON.stringify(sumMinutes(sumtime)),
         pip_task: tip
       })
     }
 
     function sumMinutes(values) {
-
       const validate = time => {
         if (time > 59 || time < 0) {
           throw new Error(
@@ -76,8 +78,6 @@ const funcApi = {
       minutes *= 60
       hours *= 3600
 
-      console.log(hours)
-
       let resulttime = new Date((hours + minutes + seconds) * 1000)
         .toISOString()
         .substr(11, 8)
@@ -86,7 +86,9 @@ const funcApi = {
         .toISOString()
         .substr(8, 2)
 
-      return String(parseInt(resultday) - 1) + ' day(s)_' + resulttime
+      let tmp = (parseInt(resultday) - 1)   
+      //console.log(tmp)
+      return (tmp + ' day(s)_' + resulttime)
     }
 
     ctx.body = {
@@ -132,6 +134,10 @@ router.post('/pipapi', async ctx => {
   if (ctx.request.body.datapip) {
     const pipadd = ctx.request.body.datapip
     if (pipadd.pip_name !== '') {
+      console.log(JSON.stringify(pipadd.pip_user))
+      console.log(JSON.stringify(pipadd.pip_name))
+      console.log(JSON.stringify(pipadd.pip_time))
+
       const pip = new Pip({
         pip_user: pipadd.pip_user,
         pip_name: pipadd.pip_name,

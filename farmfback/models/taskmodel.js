@@ -7,6 +7,9 @@ const TaskSchema = new Schema({
     },
     task_time: {
         type: String
+    },
+    task_user: {
+        type: String
     }
 },{ 
     collection: 'taskuser'

@@ -43,14 +43,18 @@
         </div>
       </v-ons-list-item>
     </v-ons-list>
-    <v-ons-list>  
+    <v-ons-list>
       <v-ons-list-item>
-      <div>задачи для выбранного конвейера</div>
+        <div>задачи для выбранного конвейера</div>
         <div class="center" style="margin-left: 10px">
-        <v-ons-button v-if="userauth" @click="pipGet">Обновить</v-ons-button>
-        <v-ons-button v-if="userauth" @click="taskInPipAdd" style="margin-left: 10px">Добавить в конвейер</v-ons-button>
+          <v-ons-button v-if="userauth" @click="pipGet">Обновить</v-ons-button>
+          <v-ons-button
+            v-if="userauth"
+            @click="taskInPipAdd"
+            style="margin-left: 10px"
+          >Добавить в конвейер</v-ons-button>
         </div>
-      </v-ons-list-item>  
+      </v-ons-list-item>
     </v-ons-list>
 
     <v-ons-list>
@@ -61,19 +65,33 @@
           <v-ons-list>
             <v-ons-list-item v-for="(value, index) in pipresponse" v-bind:key="index">
               <div class="left">
-                <v-ons-radio :input-id="'radio-' + index" :value="value._id" v-model="selectedPip" style="border: ridge"></v-ons-radio>
+                <v-ons-radio
+                  :input-id="'radio-' + index"
+                  :value="value._id"
+                  v-model="selectedPip"
+                  style="border: ridge"
+                ></v-ons-radio>
               </div>
               <div class="center">
-                <span class="list-item__title">Конвейер: {{ value.pip_name }}</span>
-                <br />
-                <span class="list-item__subtitle">Время на выполнение: {{ value.pip_time }}</span>
-                <span style="display:none">Id: {{ value._id }}</span>
-                Задачи в конвейере: 
-                <span style="color: blue" v-for="(taskpip, _id) in value.pip_task" v-bind:key="_id">
-                  <div style="margin-left: 5px">
-                    ( {{ taskpip.task_name }} - {{ taskpip.task_time }} )
-                    </div>
+                <div>
+                  <span class="list-item__title">Конвейер: {{ value.pip_name }}</span>
+                  <br />
+                  <span class="list-item__subtitle">Время на выполнение: {{ value.pip_time }}</span>
+                  <br><span style="display:none">Id: {{ value._id }}</span>
+                  Задачи в конвейере:
+                  <span
+                    style="color: blue"
+                    v-for="(taskpip, _id) in value.pip_task"
+                    v-bind:key="_id"
+                  >
+                    <div
+                      style="margin-left: 5px"
+                    >( {{ taskpip.task_name }} - {{ taskpip.task_time }} )</div>
                   </span>
+                </div>
+                <div style="margin: auto">
+                  <v-ons-button>Запустить</v-ons-button>
+                </div>
               </div>
             </v-ons-list-item>
           </v-ons-list>
@@ -93,7 +111,11 @@
                 <img class="list-item__thumbnail" src="http://placekitten.com/g/40/40" />
               </div>
               <div class="left">
-                <v-ons-checkbox :input-id="'check-' + index" :value="value._id" v-model="checkedTask"></v-ons-checkbox>
+                <v-ons-checkbox
+                  :input-id="'check-' + index"
+                  :value="value._id"
+                  v-model="checkedTask"
+                ></v-ons-checkbox>
               </div>
               <div class="center">
                 <div class="center">
@@ -101,9 +123,10 @@
                   <br />
                   <span class="list-item__subtitle">Время: {{ value.task_time }}</span>
                   <span style="display: none">Id: {{ value._id }}</span>
+                  <span>{{ value.task_user }}</span>
                 </div>
-                <div style="margin-left: auto;">
-                  <v-ons-button @click="taskDel(value._id)">Удалить</v-ons-button>
+                <div style="margin-left: auto;" v-if="value.task_user === loginLabel">
+                  <v-ons-button  @click="taskDel(value._id)">Удалить</v-ons-button>
                 </div>
               </div>
             </v-ons-list-item>
@@ -118,7 +141,12 @@
           <v-ons-input placeholder="имя задачи" float v-model="task_name"></v-ons-input>
         </v-ons-list-item>
         <v-ons-list-item>
-          <v-ons-input placeholder="время на выполнение" float v-model="task_time"></v-ons-input>
+          <v-ons-input
+            placeholder="время на выполнение-00:00:00"
+            size="100"
+            float
+            v-model="task_time"
+          ></v-ons-input>
         </v-ons-list-item>
         <v-ons-list-item>
           <v-ons-action-sheet-button @click="taskAdd" icon="md-square-o">Добавить задачу</v-ons-action-sheet-button>
@@ -134,7 +162,13 @@
           </div>
         </v-ons-list-item>
         <v-ons-list-item>
-          <v-ons-input disabled="true" placeholder="среднее время выполнения формат" float size="100" v-model="pip_time"></v-ons-input>
+          <v-ons-input
+            disabled="true"
+            placeholder="среднее время выполнения формат - 00:00:00"
+            float
+            size="100"
+            v-model="pip_time"
+          ></v-ons-input>
         </v-ons-list-item>
         <v-ons-list-item>
           <v-ons-action-sheet-button @click="pipAdd" icon="md-square-o">Добавить конвейер</v-ons-action-sheet-button>
@@ -183,7 +217,7 @@ export default {
       pipresponse: null,
       numpip: 0,
       selectedPip: "",
-      tip: "",
+      tip: ""
     };
   },
   methods: {
@@ -212,23 +246,25 @@ export default {
         })
         .catch();
     },
-    taskInPip: function (){
-      let ar = {checkObj: this.checkedTask}
+    taskInPip: function() {
+      let ar = { checkObj: this.checkedTask };
       axios
         .put(pippath + this.selectedPip, { ar })
         .then()
         .catch();
     },
-    taskInPipAdd: function () {
+    taskInPipAdd: function() {
       axios
-        .put(pippath + this.selectedPip, {data: {tasks: this.checkedTask, id: this.selectedPip }})
+        .put(pippath + this.selectedPip, {
+          data: { tasks: this.checkedTask, id: this.selectedPip }
+        })
         .then()
         .catch();
     },
     taskAdd: function() {
       axios
         .post(apipath, {
-          datatask: { task_name: this.task_name, task_time: this.task_time }
+          datatask: { task_name: this.task_name, task_time: this.task_time, task_user: this.tasknameuser }
         })
         .then(response => {
           this.respPost = response;
@@ -239,14 +275,14 @@ export default {
       this.taskGet();
     },
     taskDel: function(idval) {
-     axios
+      axios
         .delete(apipath + idval)
         .then(() => {
           alert("then delete");
         })
         .catch();
       this.$alert("Удалена задача");
-      this.loginUser() //неправильно
+      this.loginUser(); //неправильно
     },
     logout: function() {
       this.tasknameuser = "";
@@ -277,9 +313,9 @@ export default {
       axios
         .get(pippath)
         .then(response => {
-          this.pipresponse = response.data.respons
+          this.pipresponse = response.data.respons;
         })
-        .catch()
+        .catch();
     },
     pipGetMy: function() {
       axios
@@ -300,7 +336,7 @@ export default {
         })
         .then(resppost => {
           this.respPostPip = resppost;
-          this.pipGet
+          this.pipGet;
         })
         .catch();
       this.actionSheetVisiblePip = false;

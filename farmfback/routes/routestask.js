@@ -28,7 +28,8 @@ router.post('/taskapi', async ctx => {
     if (taskadd.task_name !== '') {
       let task = new Task({
         task_name: taskadd.task_name,
-        task_time: taskadd.task_time
+        task_time: taskadd.task_time,
+        task_user: taskadd.task_user
       })
       task.save(function(err) {
         if (err) {

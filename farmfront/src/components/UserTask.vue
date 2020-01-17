@@ -47,7 +47,7 @@
       <v-ons-list-item>
       <div>задачи для выбранного конвейера</div>
         <div class="center" style="margin-left: 10px">
-        <v-ons-button v-if="userauth" @click="pipGet">Показать</v-ons-button>
+        <v-ons-button v-if="userauth" @click="pipGet">Обновить</v-ons-button>
         <v-ons-button v-if="userauth" @click="taskInPipAdd" style="margin-left: 10px">Добавить в конвейер</v-ons-button>
         </div>
       </v-ons-list-item>  
@@ -294,7 +294,7 @@ export default {
         .post(pippath, {
           datapip: {
             pip_user: this.tasknameuser,
-            pip_name: this.tasknameuser + " №" + this.numpip,
+            pip_name: this.tasknameuser + "№" + this.numpip,
             pip_time: this.pip_time
           }
         })

@@ -12,6 +12,11 @@ git clone https://github.com/AlexeyZAA/CyntegrityTest.git
 cd \farmfback\dumptask\
 mongorestore --db task
 ```
+после клоне в бек и фрон делаем:
+```
+npm install
+```
+
 #запуск backend 
 ```
 cd my_backend

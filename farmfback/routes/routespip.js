@@ -1,5 +1,6 @@
 const Router = require('koa-router')
 const router = new Router()
+const http = require('http')
 
 const Pip = require('../models/pipmodel')
 const Tip = require('../models/taskmodel')
@@ -122,6 +123,33 @@ router.get('/pipapi/:id', async (ctx, next) => {
     }
   })
 })
+
+//по этому роуту обращаемся к внешнему приложению
+const pathserver = 'http://127.0.0.1:777/?run='
+
+router.get('/piprun/:id', async (ctx, next) => {
+  console.log(pathserver + ctx.params.id)
+  http.get(pathserver + ctx.params.id, (ctx) => {
+    //clientResponse.set('Content-Type', remoteResponse.headers['content-type']);
+    ctx.respons.set('Content-Type: charset=utf-8');
+     ctx.pipe(ctx)
+     console.log(JSON.stringify(ctx))
+   })
+})
+
+/*
+router.get('/piprun/:id', async (ctx, next) => {
+  //console.log(JSON.stringify(ctx.params.id))
+      let rep = await ctx.get('/?piprun=' + ctx.params.id, null, {
+    //let repo = await ctx.get('/repos/junyiz/koa-http-request', null, {
+        'User-Agent': 'koa-http-request', 'Accept-Charset' : 'ASCII'
+    })
+    console.log(JSON.stringify(rep))
+    //ctx.body = 'repos id: ' + repo.id + '\nrepos name: ' + repo.full_name;
+    //ctx.body = 'repos id: ' + rep.id + '\nrepos name: ' + repo.full_name
+
+})
+*/
 router.put('/pipapi/:id', async ctx => {
   console.log(ctx.request.body.data.tasks)
   console.log(ctx.request.body.data.id)

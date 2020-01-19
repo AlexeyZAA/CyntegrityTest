@@ -1,0 +1,6 @@
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\bin\Debug\fornode.exe.config
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\bin\Debug\fornode.exe
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\bin\Debug\fornode.pdb
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\obj\Debug\fornode.exe
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\obj\Debug\fornode.pdb
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\obj\Debug\fornode.csprojAssemblyReference.cache

@@ -1,1 +1,1 @@
-{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"task.pipuser"}],"uuid":"843baf489fe14064b72b029faf7f19fe"}
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"task.pipuser"}],"uuid":"3e3e6b872f214f70b07e7fd9049780d7"}

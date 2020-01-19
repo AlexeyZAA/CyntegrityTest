@@ -59,6 +59,12 @@
 
     <v-ons-list>
       <v-ons-list-header>{{ myPip }}</v-ons-list-header>
+      <section v-if="progressvisible" style="margin: 16px">
+        <p>Выполнение задачи: {{ progress }}%</p>
+        <p>
+          <v-ons-progress-bar :value="progress" secondary-value="100"></v-ons-progress-bar>
+        </p>
+      </section>
       <v-ons-list-item expandable :expanded.sync="isVisiblePip">
         Все контейнеры
         <div class="expandable-content">
@@ -77,7 +83,8 @@
                   <span class="list-item__title">Конвейер: {{ value.pip_name }}</span>
                   <br />
                   <span class="list-item__subtitle">Время на выполнение: {{ value.pip_time }}</span>
-                  <br><span style="display:none">Id: {{ value._id }}</span>
+                  <br />
+                  <span style="display:none">Id: {{ value._id }}</span>
                   Задачи в конвейере:
                   <span
                     style="color: blue"
@@ -90,7 +97,7 @@
                   </span>
                 </div>
                 <div style="margin: auto">
-                  <v-ons-button>Запустить</v-ons-button>
+                  <v-ons-button @click="runPip(value._id)">Запустить</v-ons-button>
                 </div>
               </div>
             </v-ons-list-item>
@@ -126,7 +133,7 @@
                   <span>{{ value.task_user }}</span>
                 </div>
                 <div style="margin-left: auto;" v-if="value.task_user === loginLabel">
-                  <v-ons-button  @click="taskDel(value._id)">Удалить</v-ons-button>
+                  <v-ons-button @click="taskDel(value._id)">Удалить</v-ons-button>
                 </div>
               </div>
             </v-ons-list-item>
@@ -217,7 +224,10 @@ export default {
       pipresponse: null,
       numpip: 0,
       selectedPip: "",
-      tip: ""
+      tip: "",
+      progress: 0,
+      intervalID: 0,
+      progressvisible: true
     };
   },
   methods: {
@@ -264,7 +274,11 @@ export default {
     taskAdd: function() {
       axios
         .post(apipath, {
-          datatask: { task_name: this.task_name, task_time: this.task_time, task_user: this.tasknameuser }
+          datatask: {
+            task_name: this.task_name,
+            task_time: this.task_time,
+            task_user: this.tasknameuser
+          }
         })
         .then(response => {
           this.respPost = response;
@@ -342,7 +356,25 @@ export default {
       this.actionSheetVisiblePip = false;
       this.$alert("Добавлен конвейер");
       this.pipGet();
+    },
+    runPip: function(id) {
+      axios
+        .get('http://localhost:8888/piprun/' + id)
+        .then(resserver => {
+          this.$alert("Запущен конвейер" + resserver.data);
+        })
+        .catch();
+      //this.$alert("Запущен конвейер" + id);
     }
+  },
+  mounted() {
+    this.intervalID = setInterval(() => {
+      if (this.progress === 100) {
+        clearInterval(this.intervalID);
+        return;
+      }
+      this.progress++;
+    }, 40);
   }
 };
 </script>

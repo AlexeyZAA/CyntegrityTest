@@ -1,0 +1,6 @@
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\bin\Release\fornode.exe.config
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\bin\Release\fornode.exe
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\bin\Release\fornode.pdb
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\obj\Release\fornode.csprojAssemblyReference.cache
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\obj\Release\fornode.exe
+D:\OSnew2019\OSPanel\domains\CyntegrityTest\outsoft\fornode\obj\Release\fornode.pdb
